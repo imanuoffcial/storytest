@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Manu</title>
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #f4f1eb;
+            --accent: #c4a484;
+            --text: #f4f1eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+
+        body {
+            background: var(--primary);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .custom-cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            mix-blend-mode: difference;
+        }
+
+        .content-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 8rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .title {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .contact-info {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .contact-link {
+            color: var(--accent);
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-link:hover {
+            opacity: 0.8;
+        }
+
+        .background-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+        }
+
+        .shape1 {
+            width: 100px;
+            height: 100px;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            background-color: var(--accent);
+            top: 10%;
+            left: 10%;
+            animation: float1 25s infinite ease-in-out;
+        }
+
+        .shape2 {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            top: 60%;
+            right: 15%;
+            animation: float2 30s infinite ease-in-out;
+        }
+
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            50% { transform: translate(50px, 20px) rotate(180deg) scale(1.1); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            50% { transform: translate(-30px, 40px) rotate(180deg) scale(0.9); }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <a href="/" style="color: var(--text); text-decoration: none; font-size: 1.5rem; font-weight: 700; position: fixed; top: 2rem; left: 2rem;">Manu</a>
+
+    <div class="custom-cursor"></div>
+
+    <div class="background-shapes">
+        <div class="shape shape1"></div>
+        <div class="shape shape2"></div>
+    </div>
+
+    <div class="content-container">
+        <h1 class="title">Contact Us</h1>
+        <p class="contact-info">
+            Have questions, suggestions, or just want to say hello? We'd love to hear from you.
+        </p>
+        <p class="contact-info">
+            Email: <a href="mailto:contact@manu.com" class="contact-link">contact@manu.com</a>
+        </p>
+        <p class="contact-info">
+            Twitter: <a href="https://twitter.com/manu" class="contact-link">@manu</a>
+        </p>
+        <p class="contact-info">
+            GitHub: <a href="https://github.com/manu" class="contact-link">github.com/manu</a>
+        </p>
+    </div>
+
+    <script>
+        const cursor = document.querySelector('.custom-cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - cursor.offsetWidth / 2 + 'px';
+            cursor.style.top = e.clientY - cursor.offsetHeight / 2 + 'px';
+        });
+
+        document.addEventListener('mousedown', () => {
+            cursor.style.transform = 'scale(0.8)';
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Story - Manu</title>
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #f4f1eb;
+            --accent: #c4a484;
+            --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+        
+        body {
+            background: var(--primary);
+            color: var(--secondary);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .story-container {
+            max-width: 800px;
+            margin: 100px auto;
+            padding: 2rem;
+        }
+        
+        .story-title {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+        
+        .story-content {
+            font-size: 18px;
+            white-space: pre-wrap;
+            line-height: 1.8;
+        }
+        
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--secondary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor"></div>
+    
+    <div class="story-container">
+        <h1 class="story-title" id="story-title"></h1>
+        <div class="story-content" id="story-content"></div>
+    </div>
+
+    <script>
+        // Custom cursor
+        const cursor = document.querySelector('.cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - 10 + 'px';
+            cursor.style.top = e.clientY - 10 + 'px';
+        });
+
+        // Load story content
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const storyId = urlParams.get('id');
+            
+            if (storyId) {
+                const stories = JSON.parse(localStorage.getItem('stories') || '[]');
+                const story = stories.find(s => s.id === parseInt(storyId));
+                
+                if (story) {
+                    document.getElementById('story-title').textContent = story.title;
+                    const content = document.getElementById('story-content');
+                    content.innerHTML = story.content;
+                    content.style.fontFamily = story.font || 'Inter';
+                    content.style.fontSize = story.fontSize || '18px';
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

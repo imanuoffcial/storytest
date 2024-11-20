@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read Story - Manu</title>
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #f4f1eb;
+            --accent: #c4a484;
+            --text: #f4f1eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+
+        body {
+            background: var(--primary);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .custom-cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            mix-blend-mode: difference;
+        }
+
+        .custom-cursor-dot {
+            width: 4px;
+            height: 4px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.1s ease;
+        }
+
+        .background-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+        }
+
+        .shape1 {
+            width: 100px;
+            height: 100px;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            background-color: var(--accent);
+            top: 10%;
+            left: 10%;
+            animation: float1 25s infinite ease-in-out;
+        }
+
+        .shape2 {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            top: 60%;
+            right: 15%;
+            animation: float2 30s infinite ease-in-out;
+        }
+
+        .shape3 {
+            width: 80px;
+            height: 80px;
+            background-color: var(--accent);
+            transform: rotate(45deg);
+            top: 40%;
+            left: 20%;
+            animation: float3 35s infinite ease-in-out;
+        }
+
+        .shape4 {
+            width: 120px;
+            height: 120px;
+            border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
+            background-color: var(--accent);
+            bottom: 20%;
+            left: 5%;
+            animation: float4 40s infinite ease-in-out;
+        }
+
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .story-content {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 15px;
+            padding: 4rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            width: 100%;
+            height: auto;
+            flex-grow: 1;
+        }
+
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            25% { transform: translate(50px, 20px) rotate(90deg) scale(1.1); }
+            50% { transform: translate(0, 50px) rotate(180deg) scale(1); }
+            75% { transform: translate(-50px, 20px) rotate(270deg) scale(0.9); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            33% { transform: translate(-30px, 40px) rotate(120deg) scale(1.2); }
+            66% { transform: translate(30px, -40px) rotate(240deg) scale(0.8); }
+        }
+
+        @keyframes float3 {
+            0%, 100% { transform: translate(0, 0) rotate(45deg) scale(1); }
+            33% { transform: translate(40px, -30px) rotate(180deg) scale(1.1); }
+            66% { transform: translate(-40px, 30px) rotate(360deg) scale(0.9); }
+        }
+
+        @keyframes float4 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            25% { transform: translate(-20px, -40px) rotate(90deg) scale(1.2); }
+            50% { transform: translate(-40px, 0) rotate(180deg) scale(1); }
+            75% { transform: translate(-20px, 40px) rotate(270deg) scale(0.8); }
+        }
+
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.02;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        #zoom-slider {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+            -webkit-appearance: none;
+            width: 150px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            cursor: none;
+            z-index: 10;
+        }
+
+        #zoom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: none;
+            transition: all 0.3s ease;
+        }
+
+        #zoom-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .download-btn {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            padding: 0.8rem 1.5rem;
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: none;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            background: var(--text);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <a href="/" style="color: var(--text); text-decoration: none; font-size: 1.5rem; font-weight: 700; position: fixed; top: 2rem; left: 2rem;">Manu</a>
+
+    <input type="range" id="zoom-slider" min="12" max="32" value="18" orient="vertical">
+
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-dot"></div>
+
+    <div class="background-shapes">
+        <div class="shape shape1"></div>
+        <div class="shape shape2"></div>
+        <div class="shape shape3"></div>
+        <div class="shape shape4"></div>
+    </div>
+
+    <div class="noise"></div>
+
+    <div class="content-container">
+        <button id="downloadBtn" class="download-btn">Download</button>
+        <h1 class="story-title" style="color: var(--text); margin-bottom: 2rem; font-size: 2.5rem; text-align: center;"></h1>
+        <div class="story-content">
+            <!-- Story content will be inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // Custom cursor
+        const cursor = document.querySelector('.custom-cursor');
+        const cursorDot = document.querySelector('.custom-cursor-dot');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - cursor.offsetWidth / 2 + 'px';
+            cursor.style.top = e.clientY - cursor.offsetHeight / 2 + 'px';
+            
+            cursorDot.style.left = e.clientX - cursorDot.offsetWidth / 2 + 'px';
+            cursorDot.style.top = e.clientY - cursorDot.offsetHeight / 2 + 'px';
+        });
+
+        document.addEventListener('mousedown', () => {
+            cursor.style.transform = 'scale(0.8)';
+            cursor.style.background = 'rgba(196, 164, 132, 0.2)';
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.style.transform = 'scale(1)';
+            cursor.style.background = 'transparent';
+        });
+    </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('Checking for story in localStorage...'); // Debug log
+        const readingStory = localStorage.getItem('readingStory');
+        console.log('Found story:', readingStory); // Debug log
+        
+        if (readingStory) {
+            const story = JSON.parse(readingStory);
+            console.log('Parsed story:', story); // Debug log
+            
+            // Set title
+            document.title = story.title;
+            const titleElement = document.querySelector('.story-title');
+            titleElement.textContent = story.title;
+            console.log('Set title:', story.title); // Debug log
+            
+            // Set content
+            const contentElement = document.querySelector('.story-content');
+            contentElement.innerHTML = story.content;
+            console.log('Set content:', story.content); // Debug log
+        } else {
+            console.log('No story found in localStorage'); // Debug log
+        }
+    });
+    </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const zoomSlider = document.getElementById('zoom-slider');
+        const storyContent = document.querySelector('.story-content');
+        
+        zoomSlider.addEventListener('input', (e) => {
+            const fontSize = e.target.value;
+            storyContent.style.fontSize = `${fontSize}px`;
+            
+            // Save preference to localStorage
+            localStorage.setItem('preferredFontSize', fontSize);
+        });
+        
+        // Load saved preference if exists
+        const savedFontSize = localStorage.getItem('preferredFontSize');
+        if (savedFontSize) {
+            zoomSlider.value = savedFontSize;
+            storyContent.style.fontSize = `${savedFontSize}px`;
+        }
+    });
+    </script>
+
+    <script>
+    const downloadBtn = document.getElementById('downloadBtn');
+    downloadBtn.addEventListener('click', () => {
+        // Get the current story content
+        const title = document.querySelector('.story-title').textContent;
+        const content = document.querySelector('.story-content').innerHTML;
+        
+        // Create HTML content using current template
+        const htmlContent = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>${title}</title>
+                <style>
+                    :root {
+                        --primary: #1a1a1a;
+                        --secondary: #f4f1eb;
+                        --accent: #c4a484;
+                        --text: #f4f1eb;
+                    }
+
+                    * {
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
+                        cursor: none;
+                    }
+
+                    body {
+                        background: var(--primary);
+                        color: var(--text);
+                        font-family: 'Inter', sans-serif;
+                        min-height: 100vh;
+                        overflow-x: hidden;
+                        position: relative;
+                    }
+
+                    .content-container {
+                        max-width: 1200px;
+                        margin: 0 auto;
+                        padding: 6rem 2rem;
+                        position: relative;
+                        z-index: 1;
+                        min-height: 100vh;
+                        display: flex;
+                        flex-direction: column;
+                    }
+
+                    .story-title {
+                        color: var(--text);
+                        margin-bottom: 2rem;
+                        font-size: 2.5rem;
+                        text-align: center;
+                    }
+
+                    .story-content {
+                        background: rgba(255, 255, 255, 0.02);
+                        border-radius: 15px;
+                        padding: 4rem;
+                        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                        backdrop-filter: blur(10px);
+                        transition: all 0.3s ease;
+                        width: 100%;
+                        height: auto;
+                        flex-grow: 1;
+                    }
+                </style>
+                <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+            </head>
+            <body>
+                <a href="/" style="color: var(--text); text-decoration: none; font-size: 1.5rem; font-weight: 700; position: fixed; top: 2rem; left: 2rem;">Manu</a>
+                
+                <div class="content-container">
+                    <h1 class="story-title">${title}</h1>
+                    <div class="story-content">
+                        ${content}
+                    </div>
+                </div>
+            </body>
+            </html>`;
+
+        // Create and download the file
+        const blob = new Blob([htmlContent], { type: 'text/html' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${title}.html`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,532 @@
+<html><head><base href="<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Manu</title>
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+        <style>
+            :root {
+                --primary: #1a1a1a;
+                --secondary: #f4f1eb;
+                --accent: #c4a484;
+            }
+    
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+    
+            body {
+                font-family: 'Inter', sans-serif;
+                background-color: var(--secondary);
+                color: var(--primary);
+                line-height: 1.6;
+            }
+    
+            .cursor {
+                width: 20px;
+                height: 20px;
+                border: 2px solid var(--primary);
+                border-radius: 50%;
+                position: fixed;
+                pointer-events: none;
+                z-index: 9999;
+                transition: transform 0.2s ease;
+            }
+    
+            .hero {
+                height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                overflow: hidden;
+            }
+    
+            .hero-content {
+                text-align: center;
+                z-index: 2;
+                opacity: 0;
+                transform: translateY(30px);
+                animation: fadeIn 1s ease forwards;
+            }
+    
+            @keyframes fadeIn {
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+    
+            h1 {
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 5rem;
+                font-weight: 300;
+                margin-bottom: 2rem;
+                letter-spacing: -1px;
+            }
+    
+            .subtitle {
+                font-size: 1.2rem;
+                font-weight: 300;
+                max-width: 600px;
+                margin: 0 auto 3rem;
+            }
+    
+            .cta-button {
+                display: inline-block;
+                padding: 1.2rem 2.4rem;
+                border: 1px solid var(--primary);
+                color: var(--primary);
+                text-decoration: none;
+                font-size: 1rem;
+                letter-spacing: 1px;
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+    
+            .cta-button:hover {
+                background-color: var(--primary);
+                color: var(--secondary);
+            }
+    
+            .floating-elements {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+            }
+    
+            .floating-element {
+                position: absolute;
+                opacity: 0.1;
+                animation: float 20s infinite linear;
+            }
+    
+            @keyframes float {
+                0% {
+                    transform: translate(0, 0) rotate(0deg);
+                }
+                100% {
+                    transform: translate(var(--translateX), var(--translateY)) rotate(360deg);
+                }
+            }
+    
+            .content-wrapper {
+                position: relative;
+                z-index: 1;
+                background: linear-gradient(to bottom, transparent, rgba(244, 241, 235, 0.9) 10%);
+            }
+    
+            .line-effect {
+                position: fixed;
+                pointer-events: none;
+                opacity: 0;
+                background: linear-gradient(90deg, transparent, var(--accent), transparent);
+                height: 1px;
+                width: 0;
+                animation: lineGrow 2s ease forwards;
+            }
+    
+            @keyframes lineGrow {
+                0% {
+                    width: 0;
+                    opacity: 0;
+                }
+                20% {
+                    opacity: 0.5;
+                }
+                80% {
+                    opacity: 0.5;
+                }
+                100% {
+                    width: 100px;
+                    opacity: 0;
+                }
+            }
+    
+            .floating-quote {
+                position: fixed;
+                pointer-events: none;
+                font-family: 'Cormorant Garamond', serif;
+                color: var(--accent);
+                opacity: 0;
+                font-size: 1.2rem;
+                z-index: 0;
+                transition: all 0.5s ease;
+                text-align: center;
+                transform-origin: center;
+            }
+    
+            @keyframes quoteFloat {
+                0% {
+                    opacity: 0;
+                    transform: translate(0, 0) scale(0.8);
+                }
+                20% {
+                    opacity: 0.3;
+                    transform: translate(20px, -20px) scale(1);
+                }
+                80% {
+                    opacity: 0.3;
+                    transform: translate(40px, -40px) scale(1);
+                }
+                100% {
+                    opacity: 0;
+                    transform: translate(60px, -60px) scale(1.2);
+                }
+            }
+    
+            .nav-menu {
+                position: fixed;
+                top: 2rem;
+                right: 2rem;
+                z-index: 100;
+            }
+    
+            .nav-menu a {
+                color: var(--primary);
+                text-decoration: none;
+                margin-left: 2rem;
+                font-size: 1.1rem;
+                transition: color 0.3s ease;
+            }
+    
+            .nav-menu a:hover {
+                color: var(--accent);
+            }
+    
+            .sparkle {
+                position: fixed;
+                pointer-events: none;
+                width: 4px;
+                height: 4px;
+                background: var(--accent);
+                border-radius: 50%;
+                opacity: 0;
+                z-index: 0;
+            }
+    
+            @keyframes sparkleEffect {
+                0% {
+                    transform: scale(0) rotate(0deg);
+                    opacity: 0;
+                }
+                50% {
+                    transform: scale(1.5) rotate(180deg);
+                    opacity: 0.6;
+                }
+                100% {
+                    transform: scale(0) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+    
+            @keyframes glowPulse {
+                0% { transform: scale(0); opacity: 0; }
+                50% { transform: scale(3); opacity: 0.3; }
+                100% { transform: scale(5); opacity: 0; }
+            }
+    
+            @keyframes rippleEffect {
+                0% { transform: scale(0); opacity: 0.5; }
+                100% { transform: scale(2); opacity: 0; }
+            }
+    
+            @keyframes shootingStar {
+                0% { 
+                    transform: translate(0, 0) rotate(45deg); 
+                    opacity: 1;
+                }
+                100% { 
+                    transform: translate(-200px, 200px) rotate(45deg);
+                    opacity: 0;
+                }
+            }
+    
+            @keyframes geometricFloat {
+                0% { transform: rotate(0deg) translateX(0) scale(1); opacity: 0; }
+                20% { opacity: 0.3; }
+                80% { opacity: 0.3; }
+                100% { transform: rotate(360deg) translateX(100px) scale(0); opacity: 0; }
+            }
+    
+            .ripple {
+                position: fixed;
+                border: 2px solid var(--accent);
+                border-radius: 50%;
+                pointer-events: none;
+                opacity: 0;
+                z-index: 0;
+            }
+    
+            .shooting-star {
+                position: fixed;
+                width: 100px;
+                height: 2px;
+                background: linear-gradient(90deg, var(--accent), transparent);
+                pointer-events: none;
+                z-index: 0;
+            }
+    
+            .geometric {
+                position: fixed;
+                pointer-events: none;
+                opacity: 0;
+                z-index: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navigation" style="padding: 2rem;">
+            <a href="/" class="logo" style="color: var(--text); text-decoration: none; font-size: 1.5rem; font-weight: 700;">Manu</a>
+        </nav>
+        
+        <div class="cursor"></div>
+        
+        <div class="nav-menu">
+            <a href="stories.html">Discover</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    
+        <div class="stories-showcase">
+            <!-- Stories will be added via JavaScript -->
+        </div>
+    
+        <div class="content-wrapper">
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>Share Your Story</h1>
+                    <p class="subtitle">A beautiful space for storytellers to craft and share their narratives with the world. Join our community of writers and readers.</p>
+                    <a href="write.html" class="cta-button">Start Writing</a>
+                </div>
+                <div class="floating-elements">
+                    <!-- SVG elements will be added via JavaScript -->
+                </div>
+            </section>
+        </div>
+    
+        <script>
+            // Custom cursor
+            document.addEventListener('mousemove', (e) => {
+                const cursor = document.querySelector('.cursor');
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+    
+            // Generate floating elements
+            const floatingElements = document.querySelector('.floating-elements');
+            const shapes = ['circle', 'square', 'triangle'];
+            
+            for (let i = 0; i < 15; i++) {
+                const element = document.createElement('div');
+                element.classList.add('floating-element');
+                
+                const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                const size = Math.random() * 50 + 20;
+                
+                element.style.setProperty('--translateX', `${Math.random() * 100 - 50}%`);
+                element.style.setProperty('--translateY', `${Math.random() * 100 - 50}%`);
+                
+                const svg = `
+                    <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+                        ${shape === 'circle' ? 
+                            `<circle cx="${size/2}" cy="${size/2}" r="${size/2}" fill="currentColor"/>` :
+                            shape === 'square' ?
+                            `<rect width="${size}" height="${size}" fill="currentColor"/>` :
+                            `<polygon points="0,${size} ${size/2},0 ${size},${size}" fill="currentColor"/>`
+                        }
+                    </svg>
+                `;
+                
+                element.innerHTML = svg;
+                element.style.left = `${Math.random() * 100}%`;
+                element.style.top = `${Math.random() * 100}%`;
+                
+                floatingElements.appendChild(element);
+            }
+    
+            // Add sparkle generation
+            function createSparkle() {
+                const sparkle = document.createElement('div');
+                sparkle.classList.add('sparkle');
+                
+                sparkle.style.left = `${Math.random() * 100}vw`;
+                sparkle.style.top = `${Math.random() * 100}vh`;
+                sparkle.style.animation = `sparkleEffect ${Math.random() * 2 + 1}s ease-out forwards`;
+                
+                document.body.appendChild(sparkle);
+                
+                setTimeout(() => {
+                    sparkle.remove();
+                }, 3000);
+            }
+    
+            // Create sparkles
+            setInterval(createSparkle, 200);
+    
+            // Add floating quotes
+            const quotes = [
+                "Every story matters",
+                "Write your heart out",
+                "Let imagination flow",
+                "Create magic with words",
+                "Your story awaits",
+                "Express yourself",
+                "Words have power",
+                "Share your voice"
+            ];
+    
+            function createFloatingQuote() {
+                const quote = document.createElement('div');
+                quote.classList.add('floating-quote');
+                quote.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+                
+                quote.style.left = `${Math.random() * 80 + 10}%`;
+                quote.style.top = `${Math.random() * 80 + 10}%`;
+                quote.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+                
+                document.body.appendChild(quote);
+                
+                requestAnimationFrame(() => {
+                    quote.style.animation = 'quoteFloat 6s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+                });
+                
+                setTimeout(() => {
+                    quote.remove();
+                }, 6000);
+            }
+    
+            // New Effect 1: Floating Lines
+            function createFloatingLine() {
+                const line = document.createElement('div');
+                line.classList.add('line-effect');
+                
+                line.style.left = `${Math.random() * 100}vw`;
+                line.style.top = `${Math.random() * 100}vh`;
+                line.style.transform = `rotate(${Math.random() * 360}deg)`;
+                
+                document.body.appendChild(line);
+                
+                setTimeout(() => {
+                    line.remove();
+                }, 2000);
+            }
+    
+            // New Effect 2: Glowing Orbs
+            function createGlowingOrb() {
+                const orb = document.createElement('div');
+                orb.style.position = 'fixed';
+                orb.style.width = '10px';
+                orb.style.height = '10px';
+                orb.style.background = `radial-gradient(circle at center, var(--accent), transparent)`;
+                orb.style.borderRadius = '50%';
+                orb.style.pointerEvents = 'none';
+                orb.style.opacity = '0';
+                orb.style.left = `${Math.random() * 100}vw`;
+                orb.style.top = `${Math.random() * 100}vh`;
+                orb.style.animation = 'glowPulse 3s ease-in-out forwards';
+                
+                document.body.appendChild(orb);
+                
+                setTimeout(() => {
+                    orb.remove();
+                }, 3000);
+            }
+    
+            // New Effect 3: Dust Particles
+            function createDustParticle() {
+                const particle = document.createElement('div');
+                particle.style.position = 'fixed';
+                particle.style.width = '2px';
+                particle.style.height = '2px';
+                particle.style.background = 'var(--accent)';
+                particle.style.borderRadius = '50%';
+                particle.style.pointerEvents = 'none';
+                particle.style.opacity = '0';
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                particle.style.animation = 'dustFloat 4s ease-out forwards';
+                
+                document.body.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 4000);
+            }
+    
+            // New Effect 4: Ripple Effects
+            function createRipple() {
+                const ripple = document.createElement('div');
+                ripple.classList.add('ripple');
+                
+                const size = Math.random() * 100 + 50;
+                ripple.style.width = `${size}px`;
+                ripple.style.height = `${size}px`;
+                ripple.style.left = `${Math.random() * 100}vw`;
+                ripple.style.top = `${Math.random() * 100}vh`;
+                ripple.style.animation = 'rippleEffect 2s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+                
+                document.body.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 2000);
+            }
+    
+            // New Effect 5: Shooting Stars
+            function createShootingStar() {
+                const star = document.createElement('div');
+                star.classList.add('shooting-star');
+                
+                star.style.left = `${Math.random() * 100 + 50}vw`;
+                star.style.top = `${Math.random() * 50}vh`;
+                star.style.animation = 'shootingStar 1s linear forwards';
+                
+                document.body.appendChild(star);
+                
+                setTimeout(() => star.remove(), 1000);
+            }
+    
+            // New Effect 6: Geometric Shapes
+            function createGeometric() {
+                const geometric = document.createElement('div');
+                geometric.classList.add('geometric');
+                
+                const size = Math.random() * 30 + 20;
+                const shape = Math.random() > 0.5 ? 'polygon' : 'path';
+                
+                const svg = `
+                    <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+                        ${shape === 'polygon' ? 
+                            `<polygon points="0,0 ${size},${size/2} 0,${size}" fill="var(--accent)" opacity="0.3"/>` :
+                            `<path d="M0 ${size/2} L${size/2} 0 L${size} ${size/2} L${size/2} ${size}Z" fill="var(--accent)" opacity="0.3"/>`
+                        }
+                    </svg>
+                `;
+                
+                geometric.innerHTML = svg;
+                geometric.style.left = `${Math.random() * 100}vw`;
+                geometric.style.top = `${Math.random() * 100}vh`;
+                geometric.style.animation = `geometricFloat ${Math.random() * 2 + 2}s ease-out forwards`;
+                
+                document.body.appendChild(geometric);
+                
+                setTimeout(() => geometric.remove(), 4000);
+            }
+    
+            // Run all effects
+            setInterval(createFloatingQuote, 2000);
+            setInterval(createFloatingLine, 3000);
+            setInterval(createGlowingOrb, 2500);
+            setInterval(createDustParticle, 1000);
+            setInterval(createSparkle, 200);
+            setInterval(createRipple, 3000);
+            setInterval(createShootingStar, 2000);
+            setInterval(createGeometric, 2500);
+        </script>
+    </body>
+    </html>
