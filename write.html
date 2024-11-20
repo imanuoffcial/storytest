@@ -288,7 +288,6 @@
         
         <nav class="navbar">
             <a href="/" class="logo" style="color: var(--secondary); text-decoration: none; font-size: 1.5rem; font-weight: 700;">Manu</a>
-            <button class="menu-btn"></button>
             <div class="nav-right">
                 <a href="stories.html" class="nav-link">Discover</a>
                 <a href="about.html" class="nav-link">About</a>
@@ -444,39 +443,20 @@
                     return;
                 }
                 
+                console.log('Saving story:', { title, content });
+                
                 const stories = JSON.parse(localStorage.getItem('stories') || '[]');
-                const editingStory = localStorage.getItem('editingStory');
+                stories.push({
+                    id: Date.now(),
+                    title,
+                    fullContent: content,
+                    content: content,
+                    excerpt: content.replace(/<[^>]*>/g, '').slice(0, 200) + '...'
+                });
+                localStorage.setItem('stories', JSON.stringify(stories));
                 
-                if (editingStory) {
-                    // We're editing an existing story
-                    const story = JSON.parse(editingStory);
-                    // Remove the old story
-                    const filteredStories = stories.filter(s => s.id !== story.id);
-                    // Add the updated version
-                    filteredStories.push({
-                        id: story.id, // Keep the same ID
-                        title,
-                        fullContent: content,
-                        content: content,
-                        excerpt: content.replace(/<[^>]*>/g, '').slice(0, 200) + '...'
-                    });
-                    localStorage.setItem('stories', JSON.stringify(filteredStories));
-                } else {
-                    // Creating a new story
-                    stories.push({
-                        id: Date.now(),
-                        title,
-                        fullContent: content,
-                        content: content,
-                        excerpt: content.replace(/<[^>]*>/g, '').slice(0, 200) + '...'
-                    });
-                    localStorage.setItem('stories', JSON.stringify(stories));
-                }
+                console.log('Stories in localStorage:', JSON.parse(localStorage.getItem('stories')));
                 
-                // Clear editing state
-                localStorage.removeItem('editingStory');
-                
-                // Redirect to saves.html
                 window.location.href = 'saves.html';
                 return;
             }
